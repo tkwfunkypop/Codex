@@ -13,3 +13,12 @@ def test_health_endpoint():
     resp = client.get("/health")
     assert resp.status_code == 200
     assert resp.get_json()["status"] == "ok"
+
+
+def test_version_endpoint():
+    app = create_app()
+    client = app.test_client()
+    resp = client.get("/version")
+    assert resp.status_code == 200
+    data = resp.get_json()
+    assert data["version"] == "1.0.0"

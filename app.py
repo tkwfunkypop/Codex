@@ -11,6 +11,10 @@ def create_app() -> Flask:
     def health():
         return jsonify(status="ok")
 
+    @app.get("/version")
+    def version():
+        return jsonify(version="1.0.0")
+
     return app
 
 def main(argv=None) -> int:
