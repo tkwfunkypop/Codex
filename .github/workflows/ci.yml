@@ -20,5 +20,5 @@ jobs:
           pip install flake8 pytest
       - name: Lint
         run: flake8
-- name: Test
-  run: PYTHONPATH=. pytest -q
+      - name: Test
+        run: PYTHONPATH=. pytest -q
