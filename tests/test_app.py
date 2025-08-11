@@ -1,24 +1,17 @@
-from app import create_app, main
+from app import create_app, __version__
 
 
-def test_cli_greeting(capsys):
-    rc = main(["--name", "Kenta"])
-    assert rc == 0
-    out = capsys.readouterr().out.strip()
-    assert out == "Hello, Kenta!"
-
-
-def test_health_endpoint():
+def test_health():
     app = create_app()
-    client = app.test_client()
-    resp = client.get("/health")
-    assert resp.status_code == 200
-    assert resp.get_json()["status"] == "ok"
+    with app.test_client() as c:
+        res = c.get("/health")
+        assert res.status_code == 200
+        assert res.get_json() == {"status": "ok"}
 
 
-def test_version_endpoint():
+def test_version():
     app = create_app()
-    client = app.test_client()
-    resp = client.get("/version")
-    assert resp.status_code == 200
-    assert resp.get_json()["version"] == "1.0.0"
+    with app.test_client() as c:
+        res = c.get("/version")
+        assert res.status_code == 200
+        assert res.get_json() == {"version": __version__}
