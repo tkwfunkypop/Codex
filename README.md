@@ -16,6 +16,11 @@ python app.py --name Kenta
 pytest -q
 ```
 
+## Endpoints
+
+- `GET /health` returns `{ "status": "ok" }`
+- `GET /version` returns `{ "version": "1.0.0" }`
+
 ## Repository hygiene
 - All dependencies are pinned in `requirements.txt`.
 - CI runs linting and tests on every push/PR.
