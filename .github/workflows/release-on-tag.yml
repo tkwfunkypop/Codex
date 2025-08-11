@@ -2,11 +2,12 @@ name: Release on tag
 
 on:
   push:
+    # v1.2.3 みたいなタグに反応します（v1.0.3 もOK）
     tags:
-      - "v*.*.*"   # v1.0.1 のようなセマンティックバージョンで動く
+      - "v*.*.*"
 
 permissions:
-  contents: write   # リリース作成に必要
+  contents: write  # リリース作成に必要
 
 jobs:
   release:
@@ -15,11 +16,28 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # ここでビルドや成果物作成が必要なら追加（今回は無し）
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-      - name: Create GitHub Release (auto notes)
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install flake8 pytest
+
+      - name: Lint (flake8)
+        run: flake8
+
+      - name: Test (pytest)
+        run: PYTHONPATH=. pytest -q
+
+      # ここまで全てOKだったらリリースを作成
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          generate_release_notes: true
+          generate_release_notes: true   # 差分から自動でリリースノート作成
+          # name/body を自動生成に任せる。手書きしたい場合は name/body を渡せます。
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
