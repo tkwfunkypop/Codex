@@ -27,3 +27,4 @@ Start with prompts like:
 - "Add a /health endpoint using Flask, write unit tests, and update CI."
 - "Refactor app.py into a package structure (src/), keep tests passing."
 - "Introduce input validation and handle errors safely without exposing stack traces."
+This is a test change for CI.
